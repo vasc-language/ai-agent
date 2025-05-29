@@ -3,6 +3,8 @@ package ai.agent.aiagent.app;
 import ai.agent.aiagent.advisor.MyLoggerAdvisor;
 import ai.agent.aiagent.advisor.ReReadingAdvisor;
 import ai.agent.aiagent.chatmemory.FileBasedChatMemory;
+import ai.agent.aiagent.rag.LoveAppRagCustomAdvisorFactory;
+import ai.agent.aiagent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -29,7 +31,7 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
  * Time: 18:10
  */
 @Slf4j
-@Component
+//@Component
 public class LoveApp {
 
     private final ChatClient chatClient;
@@ -37,6 +39,8 @@ public class LoveApp {
     private VectorStore loveAppVectorStore; // 基于内存存储的向量数据库
     @Resource
     private Advisor loveAppRagCloudAdvisor; // 基于云知识库的检索增强服务
+    @Resource
+    private QueryRewriter queryRewriter; // 查询重写器
 
     private static final String SYSTEM_PROMPT = "扮演深耕恋爱心理领域的专家。开场向用户表明身份，告知用户可倾诉恋爱难题。" +
             "围绕单身、恋爱、已婚三种状态提问：单身状态询问社交圈拓展及追求心仪对象的困扰；" +
@@ -109,17 +113,24 @@ public class LoveApp {
      * 为 AI 模型提供上下文，帮助其生成回答。
      */
     public String doChatWithRag(String message, String chatId) {
+        String queryRewriteMessage = queryRewriter.doQueryRewrite(message);
         ChatResponse chatResponse = chatClient
                 .prompt()
-                .user(message)
+                .user(queryRewriteMessage)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志，便于观察效果
                 .advisors(new MyLoggerAdvisor())
                 // 应用 RAG 知识库问答
-                // .advisors(new QuestionAnswerAdvisor()loveAppVectorStore)
+                // .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
                 // 应用增强检索服务（云知识库服务）
                 .advisors(loveAppRagCloudAdvisor)
+                // 应用自定义的 RAG 检索增强生成服务（文档检索器 + 上下文增强器）
+                .advisors(
+                        LoveAppRagCustomAdvisorFactory.createLoveAppRagCustomAdvisor(
+                                loveAppVectorStore, "已婚"
+                        )
+                )
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

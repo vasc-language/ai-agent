@@ -38,4 +38,8 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+# searchAPI
+search-api:
+  api-key: seyq5uy4aTsHc8iCPGV3LzQ9 # ${SEARCH_API:}
+
 
