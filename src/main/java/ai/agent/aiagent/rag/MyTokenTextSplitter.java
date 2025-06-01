@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 2025-05-28
  * Time: 15:48
  */
-//@Component
+@Component
 public class MyTokenTextSplitter {
     public List<Document> splitterDocument(List<Document> documents) {
         TokenTextSplitter splitter = new TokenTextSplitter();

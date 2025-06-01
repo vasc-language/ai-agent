@@ -17,7 +17,7 @@ import java.util.List;
  * 负责读取所有的 MarkDown 文档，并转换为 Document 列表
  */
 @Slf4j
-//@Component
+@Component
 public class LoveAppDocumentLoader {
     private final ResourcePatternResolver resourcePatternResolver;
 

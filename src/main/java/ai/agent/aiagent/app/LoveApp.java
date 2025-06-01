@@ -15,8 +15,11 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.tool.ToolCallback;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
  * Time: 18:10
  */
 @Slf4j
-//@Component
+@Component
 public class LoveApp {
 
     private final ChatClient chatClient;
@@ -41,6 +44,11 @@ public class LoveApp {
     private Advisor loveAppRagCloudAdvisor; // 基于云知识库的检索增强服务
     @Resource
     private QueryRewriter queryRewriter; // 查询重写器
+    @Resource
+    private ToolCallback[] allTools; // 调用工具箱
+    @Resource
+    @Lazy // 延迟初始化，避免启动时立即连接MCP服务器
+    private ToolCallbackProvider toolCallbackProvider; // 调用 MCP server 工具
 
     private static final String SYSTEM_PROMPT = "扮演深耕恋爱心理领域的专家。开场向用户表明身份，告知用户可倾诉恋爱难题。" +
             "围绕单身、恋爱、已婚三种状态提问：单身状态询问社交圈拓展及追求心仪对象的困扰；" +
@@ -63,9 +71,6 @@ public class LoveApp {
 
     /**
      * 编写对话方法
-     * @param message
-     * @param chatId
-     * @return
      */
     public String doChat(String message, String chatId) {
         ChatResponse response = chatClient.prompt()
@@ -138,5 +143,48 @@ public class LoveApp {
         return content;
     }
 
+    /**
+     * 工具调用
+     */
+    public String doChatWithTools(String message, String chatId) {
+        ChatResponse response = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 开启日志，便于观察效果
+                .advisors(new MyLoggerAdvisor())
+                .tools(allTools)
+                .call()
+                .chatResponse();
+        String content = response.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+    }
+
+    /**
+     * AI 调用MCP服务
+     */
+    public String doChatWithMcp(String message, String chatId) {
+        try {
+            ChatResponse chatResponse = chatClient
+                    .prompt()
+                    .user(message)
+                    .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                            .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                    // 开启日志，便于观察效果
+                    .advisors(new MyLoggerAdvisor())
+                    .tools(toolCallbackProvider)
+                    .call()
+                    .chatResponse();
+            String content = chatResponse.getResult().getOutput().getText();
+            log.info("content: {}", content);
+            return content;
+        } catch (Exception e) {
+            log.error("MCP服务调用失败，降级到普通对话模式: {}", e.getMessage(), e);
+            // 降级到普通对话模式
+            return doChat(message, chatId);
+        }
+    }
 
 }

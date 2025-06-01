@@ -1,0 +1,21 @@
+spring:
+  ai:
+    mcp:
+      server:
+        name: image-search-mcp-server
+        version: 0.0.1
+        type: SYNC
+        # sse
+        stdio: false
+        # 增加SSE服务端超时配置
+        timeout: 60000  # 服务端操作超时60秒
+  # 增加Spring异步请求超时配置
+  mvc:
+    async:
+      request-timeout: 60000  # 异步请求超时60秒
+# 增加服务器超时配置
+server:
+  # Tomcat连接超时配置
+  tomcat:
+    connection-timeout: 60000  # 连接超时60秒
+    keep-alive-timeout: 60000  # Keep-Alive超时60秒

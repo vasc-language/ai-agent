@@ -23,11 +23,11 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexT
  * Date: 2025-05-25
  * Time: 16:10
  */
-//@Configuration
+@Configuration
 public class PgVectorVectorStoreConfig {
     @Resource
     private LoveAppDocumentLoader loveAppDocumentLoader;
-    @Bean
+    @Bean("pgVectorVectorStore")
     public VectorStore pgVectorVectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel dashscopeEmbeddingModel) {
         // 配置向量数据库信息
         VectorStore vectorStore = PgVectorStore.builder(jdbcTemplate, dashscopeEmbeddingModel)

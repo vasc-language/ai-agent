@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * 查询重写器
  */
-//@Component
+@Component
 public class QueryRewriter {
     private final QueryTransformer queryTransformer;
 

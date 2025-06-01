@@ -28,6 +28,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Spring AI MCP Client -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
+			<version>1.0.0-M6</version>
+		</dependency>
 		<!--读取MarkDown文档-->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
@@ -112,6 +118,19 @@
 			<artifactId>font-asian</artifactId>
 			<version>9.1.0</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- 添加Jakarta Bean Validation Provider -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.1.Final</version>
+		</dependency>
+
+		<!-- 添加Jakarta Validation API -->
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 
 

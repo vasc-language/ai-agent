@@ -1,6 +1,9 @@
 spring:
   application:
     name: ai-agent
+  # 配置延迟初始化，避免启动时立即连接MCP服务器
+  main:
+    lazy-initialization: true
   datasource:
     url: jdbc:postgresql://rm-cn-g4t49zdur00074go.rwlb.rds.aliyuncs.com:5432/ai-agent
     username: my_user
@@ -11,12 +14,34 @@ spring:
       chat:
         options:
           model: qwen-plus
+    mcp:
+      client:
+        enabled: true
+        timeout: 60000  # 增加超时时间到60秒
+        # 增加连接重试配置
+        connect-timeout: 60000  # 连接超时60秒
+        read-timeout: 60000     # 读取超时60秒
+        retry-attempts: 3       # 重试次数
+        retry-delay: 5000       # 重试间隔5秒
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8127
+              timeout: 60000  # SSE连接超时
+              connect-timeout: 60000  # SSE连接超时60秒
+              read-timeout: 60000     # SSE读取超时60秒
+        stdio:
+        servers-configuration: classpath:mcp-servers.json
     vectorstore:
       pgvector:
         index-type: HNSW
         dimensions: 1536
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+  # 增加Spring异步请求超时配置
+  mvc:
+    async:
+      request-timeout: 60000  # 异步请求超时60秒
 server:
   port: 8123
   servlet:
