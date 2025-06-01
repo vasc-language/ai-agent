@@ -23,7 +23,7 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexT
  * Date: 2025-05-25
  * Time: 16:10
  */
-@Configuration
+//@Configuration
 public class PgVectorVectorStoreConfig {
     @Resource
     private LoveAppDocumentLoader loveAppDocumentLoader;

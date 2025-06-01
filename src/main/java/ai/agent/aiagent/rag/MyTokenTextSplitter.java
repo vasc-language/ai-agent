@@ -13,7 +13,11 @@ import java.util.List;
  * Date: 2025-05-28
  * Time: 15:48
  */
+<<<<<<< HEAD
 @Component
+=======
+//@Component
+>>>>>>> f265d1d9e25af6dc4736c36073e4d6b61f429059
 public class MyTokenTextSplitter {
     public List<Document> splitterDocument(List<Document> documents) {
         TokenTextSplitter splitter = new TokenTextSplitter();
