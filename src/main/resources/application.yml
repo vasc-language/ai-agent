@@ -14,24 +14,24 @@ spring:
       chat:
         options:
           model: qwen-plus
-    mcp:
-      client:
-        enabled: true
-        timeout: 60000  # 增加超时时间到60秒
-        # 增加连接重试配置
-        connect-timeout: 60000  # 连接超时60秒
-        read-timeout: 60000     # 读取超时60秒
-        retry-attempts: 3       # 重试次数
-        retry-delay: 5000       # 重试间隔5秒
-        sse:
-          connections:
-            server1:
-              url: http://localhost:8127
-              timeout: 60000  # SSE连接超时
-              connect-timeout: 60000  # SSE连接超时60秒
-              read-timeout: 60000     # SSE读取超时60秒
-        stdio:
-        servers-configuration: classpath:mcp-servers.json
+#    mcp:
+#      client:
+#        enabled: true
+#        timeout: 60000  # 增加超时时间到60秒
+#        # 增加连接重试配置
+#        connect-timeout: 60000  # 连接超时60秒
+#        read-timeout: 60000     # 读取超时60秒
+#        retry-attempts: 3       # 重试次数
+#        retry-delay: 5000       # 重试间隔5秒
+#        sse:
+#          connections:
+#            server1:
+#              url: http://localhost:8127
+#              timeout: 60000  # SSE连接超时
+#              connect-timeout: 60000  # SSE连接超时60秒
+#              read-timeout: 60000     # SSE读取超时60秒
+#        stdio:
+#        servers-configuration: classpath:mcp-servers.json
     vectorstore:
       pgvector:
         index-type: HNSW

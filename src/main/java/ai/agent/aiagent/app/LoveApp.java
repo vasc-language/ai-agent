@@ -34,7 +34,7 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
  * Time: 18:10
  */
 @Slf4j
-//@Component
+@Component
 public class LoveApp {
 
     private final ChatClient chatClient;
@@ -44,14 +44,11 @@ public class LoveApp {
     private Advisor loveAppRagCloudAdvisor; // 基于云知识库的检索增强服务
     @Resource
     private QueryRewriter queryRewriter; // 查询重写器
-<<<<<<< HEAD
     @Resource
     private ToolCallback[] allTools; // 调用工具箱
     @Resource
     @Lazy // 延迟初始化，避免启动时立即连接MCP服务器
     private ToolCallbackProvider toolCallbackProvider; // 调用 MCP server 工具
-=======
->>>>>>> f265d1d9e25af6dc4736c36073e4d6b61f429059
 
     private static final String SYSTEM_PROMPT = "扮演深耕恋爱心理领域的专家。开场向用户表明身份，告知用户可倾诉恋爱难题。" +
             "围绕单身、恋爱、已婚三种状态提问：单身状态询问社交圈拓展及追求心仪对象的困扰；" +

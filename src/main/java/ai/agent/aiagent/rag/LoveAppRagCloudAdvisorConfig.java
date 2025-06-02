@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * 基于阿里云知识库服务的RAG增强检索rag
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class LoveAppRagCloudAdvisorConfig {
     @Value("${spring.ai.dashscope.api-key}")
     private String dashScopeApiKey;

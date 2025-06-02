@@ -13,6 +13,7 @@ import ai.agent.aiagent.tools.WebScrapingTool;
 import ai.agent.aiagent.tools.ResourceDownloadTool;
 import ai.agent.aiagent.tools.TerminalOperationTool;
 import ai.agent.aiagent.tools.PDFGenerationTool;
+import ai.agent.aiagent.tools.TerminateTool;
 
 /**
  * 集中注册：可以给AI一次性提供所有的工具
@@ -40,6 +41,10 @@ public class ToolRegistration {
         TerminalOperationTool terminalOperationTool = new TerminalOperationTool();
         // PDF 生成工具
         PDFGenerationTool pdfGenerationTool = new PDFGenerationTool();
+        // 任务终止工具
+        TerminateTool terminateTool = new TerminateTool();
+        // 人机交互工具
+        // AskHumanTool askHumanTool = new AskHumanTool();
 
         return ToolCallbacks.from(
                 fileOperationTool,
@@ -47,7 +52,9 @@ public class ToolRegistration {
                 webScrapingTool,
                 resourceDownloadTool,
                 terminalOperationTool,
-                pdfGenerationTool
+                pdfGenerationTool,
+                terminateTool//,
+                // askHumanTool
         );
     }
 }

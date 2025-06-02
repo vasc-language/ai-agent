@@ -53,9 +53,8 @@ public class ToolCallAgent extends ReActAgent {
                 .build();
         }
 
-    /**Add commentMore actions
+    /**
      * 处理当前状态并决定下一步行动
-     *
      * @return 是否需要执行行动
      */
     @Override
@@ -74,7 +73,7 @@ public class ToolCallAgent extends ReActAgent {
                     .tools(availableTools)
                     .call()
                     .chatResponse();
-            // 记录响应，用于等下 Act
+            // 记录响应，用于 Act 方法
             this.toolCallChatResponse = chatResponse;
             // 3、解析工具调用结果，获取要调用的工具
             // 助手消息

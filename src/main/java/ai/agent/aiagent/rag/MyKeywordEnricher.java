@@ -11,11 +11,8 @@ import java.util.List;
 /**
  * 基于 AI 的文档元信息增强器
  */
-<<<<<<< HEAD
+
 @Component
-=======
-//@Component
->>>>>>> f265d1d9e25af6dc4736c36073e4d6b61f429059
 public class MyKeywordEnricher {
     @Resource
     private ChatModel dashscopeChatModel;
