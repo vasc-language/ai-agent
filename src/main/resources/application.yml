@@ -6,8 +6,8 @@ spring:
     lazy-initialization: true
   datasource:
     url: jdbc:postgresql://rm-cn-g4t49zdur00074go.rwlb.rds.aliyuncs.com:5432/ai-agent
-    username: my_user
-    password: zRT3LJNYGz@
+    username: 用户名
+    password: 密码
   ai:
     dashscope:
       api-key: ${AI_DASHSCOPE_API_KEY:}
@@ -65,6 +65,6 @@ knife4j:
     language: zh_cn
 # searchAPI
 search-api:
-  api-key: seyq5uy4aTsHc8iCPGV3LzQ9 # ${SEARCH_API:}
+  api-key: 41ca7922-0ef2-4a8c-8f26-2cf54c675ff9 # https://dashboard.exa.ai/api-keys
 
 

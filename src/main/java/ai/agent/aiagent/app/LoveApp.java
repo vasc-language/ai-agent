@@ -20,6 +20,7 @@ import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -185,6 +186,19 @@ public class LoveApp {
             // 降级到普通对话模式
             return doChat(message, chatId);
         }
+    }
+
+    /**
+     * 添加流式接口
+     */
+    public Flux<String> doChatByStream(String message, String chatId) {
+        Flux<String> content = chatClient.prompt()
+                .user(message)
+                .advisors(advisorSpec -> advisorSpec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .stream()
+                .content();
+        return content;
     }
 
 }

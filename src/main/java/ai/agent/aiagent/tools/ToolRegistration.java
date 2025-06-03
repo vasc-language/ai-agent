@@ -25,14 +25,15 @@ import ai.agent.aiagent.tools.TerminateTool;
 @Configuration
 public class ToolRegistration {
     @Value("${search-api.api-key}")
-    private String searchApiKey;
+    private String exaApiKey;
 
     @Bean
     public ToolCallback[] allTools() {
         // 文件操作工具
         FileOperationTool fileOperationTool = new FileOperationTool();
         // 网页浏览工具
-        WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
+        // WebSearchTool webSearchTool = new WebSearchTool(searchApiKey);
+        ExaWebSearchTool exaWebSearchTool = new ExaWebSearchTool(exaApiKey);
         // 网页抓取工具
         WebScrapingTool webScrapingTool = new WebScrapingTool();
         // 资源下载工具
@@ -48,7 +49,7 @@ public class ToolRegistration {
 
         return ToolCallbacks.from(
                 fileOperationTool,
-                webSearchTool,
+                exaWebSearchTool,
                 webScrapingTool,
                 resourceDownloadTool,
                 terminalOperationTool,
